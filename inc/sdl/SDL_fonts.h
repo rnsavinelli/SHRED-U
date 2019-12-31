@@ -1,5 +1,5 @@
 /*
- * main.c
+ * SDL_fonts.h
  * 
  * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  * 
@@ -20,22 +20,18 @@
  * 
  */
 
-#include "SDL_handler.h"
-#include "game.h"
+#ifndef SDL_FONTS_H
+#define SDL_FONTS_H
 
-int main(void)
-{
-	struct Resources core;
-    struct Game data;
-    	
-	if(SDL_init_resources(&core) != ERROR)
-	{
-		init_game(&core, &data);
-		run_game(&core, &data);
-	}
-	
-	//quit_game(&data);
-	SDL_clean_resources(&core);
-	
-    return 0;
-}
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+
+#define TITLE_FONT_PATH "assets/fonts/LiberationSans-Bold.ttf"
+#define TEXT_FONT_PATH  "assets/fonts/LiberationSans-Regular.ttf"
+
+struct Fonts {
+    TTF_Font *title;
+    TTF_Font *text;
+};
+
+#endif

@@ -1,5 +1,5 @@
 /*
- * main.c
+ * SDL_textures.h
  * 
  * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  * 
@@ -20,22 +20,26 @@
  * 
  */
 
-#include "SDL_handler.h"
-#include "game.h"
+#ifndef SDL_TEXTURES_H
+#define SDL_TEXTURES_H
 
-int main(void)
-{
-	struct Resources core;
-    struct Game data;
-    	
-	if(SDL_init_resources(&core) != ERROR)
-	{
-		init_game(&core, &data);
-		run_game(&core, &data);
-	}
-	
-	//quit_game(&data);
-	SDL_clean_resources(&core);
-	
-    return 0;
-}
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
+#define PLAYER_ASSET	"assets/images/drive-harddisk.png"
+#define ENEMY_ASSET		"assets/images/text-x-generic.png"
+#define ASTEROID_ASSET	"assets/images/dialog-error.png"
+
+#define ERROR 1
+
+/* Stores game textures */
+struct Textures {
+	SDL_Texture *player;
+	SDL_Texture *enemy;
+	SDL_Texture *asteroid;
+};
+
+int create_texture(SDL_Renderer **renderer, SDL_Texture **texture, char *image_path);
+void destroy_texture(SDL_Texture **texture);
+
+#endif

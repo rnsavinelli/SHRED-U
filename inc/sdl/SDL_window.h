@@ -1,5 +1,5 @@
 /*
- * main.c
+ * SDL_window.h
  * 
  * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  * 
@@ -20,22 +20,23 @@
  * 
  */
 
-#include "SDL_handler.h"
-#include "game.h"
+#ifndef SDL_WINDOW_H
+#define SDL_WINDOW_H
 
-int main(void)
-{
-	struct Resources core;
-    struct Game data;
-    	
-	if(SDL_init_resources(&core) != ERROR)
-	{
-		init_game(&core, &data);
-		run_game(&core, &data);
-	}
-	
-	//quit_game(&data);
-	SDL_clean_resources(&core);
-	
-    return 0;
-}
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_timer.h>
+
+#define WINDOW_TITLE "SHRED -U: The Game"
+
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 480
+
+#define ERROR 1
+
+int create_window(SDL_Window **window);
+int create_renderer(SDL_Renderer **renderer, SDL_Window **window);
+
+void destroy_window(SDL_Window **window);
+void destroy_renderer(SDL_Renderer **renderer);
+
+#endif

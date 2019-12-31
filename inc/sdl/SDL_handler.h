@@ -1,5 +1,5 @@
 /*
- * main.c
+ * SDL_handler.h
  * 
  * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  * 
@@ -20,22 +20,29 @@
  * 
  */
 
-#include "SDL_handler.h"
-#include "game.h"
+#ifndef SDL_HANDLER_H
+#define SDL_HANDLER_H
 
-int main(void)
-{
-	struct Resources core;
-    struct Game data;
-    	
-	if(SDL_init_resources(&core) != ERROR)
-	{
-		init_game(&core, &data);
-		run_game(&core, &data);
-	}
-	
-	//quit_game(&data);
-	SDL_clean_resources(&core);
-	
-    return 0;
-}
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_timer.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+
+#include "SDL_window.h"
+#include "SDL_textures.h"
+#include "SDL_fonts.h"
+
+#define ERROR 1
+
+struct Resources {
+	SDL_Window *window;
+	SDL_Renderer *renderer;
+
+	struct Textures textures;
+    struct Fonts fonts;    
+};
+
+int SDL_init_resources(struct Resources *sdl);
+void SDL_clean_resources(struct Resources *sdl);
+
+#endif

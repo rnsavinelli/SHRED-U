@@ -1,5 +1,5 @@
 /*
- * main.c
+ * SDL_textures.h
  * 
  * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  * 
@@ -20,22 +20,31 @@
  * 
  */
 
-#include "SDL_handler.h"
-#include "game.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_timer.h>
+#include "SDL_textures.h"
 
-int main(void)
+/* Loads game textures to memory */
+int create_texture(SDL_Renderer **renderer, SDL_Texture **texture, char *image_path)
 {
-	struct Resources core;
-    struct Game data;
-    	
-	if(SDL_init_resources(&core) != ERROR)
-	{
-		init_game(&core, &data);
-		run_game(&core, &data);
+	SDL_Surface *surface = NULL;
+	
+	/* Player's surface*/
+	surface = IMG_Load(image_path);
+	if (surface == NULL) {
+        printf("Error loading surface.\n");
+        return ERROR;
+    }
+    
+    else {
+	    *texture = SDL_CreateTextureFromSurface(*renderer, surface);
+		SDL_FreeSurface(surface);
+	
+		if (*texture == NULL) {
+			printf("Error creating texture: %s\n", SDL_GetError());
+			return ERROR;
+		}
 	}
 	
-	//quit_game(&data);
-	SDL_clean_resources(&core);
-	
-    return 0;
+	return 0;
 }

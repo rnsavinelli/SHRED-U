@@ -1,5 +1,5 @@
 /*
- * main.c
+ * SDL_drawing.h
  * 
  * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  * 
@@ -20,22 +20,7 @@
  * 
  */
 
-#include "SDL_handler.h"
-#include "game.h"
+#ifndef SDL_DRAWING_H
+#define SDL_DRAWING_H
 
-int main(void)
-{
-	struct Resources core;
-    struct Game data;
-    	
-	if(SDL_init_resources(&core) != ERROR)
-	{
-		init_game(&core, &data);
-		run_game(&core, &data);
-	}
-	
-	//quit_game(&data);
-	SDL_clean_resources(&core);
-	
-    return 0;
-}
+#endif
