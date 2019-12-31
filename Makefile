@@ -3,8 +3,8 @@
 
 CC = gcc
 CFLAGS = `sdl2-config --libs --cflags` -Wall -g -lSDL2_image -lSDL2_ttf -lm
-INCLUDES = -I ./inc/ -I ./inc/sdl/
-SOURCES = ./src/*.c ./src/sdl/*.c 
+INCLUDES = -I ./inc/ -I ./inc/sdl/ -I ./inc/logic/
+SOURCES = ./src/*.c ./src/sdl/*.c ./src/logic/*.c 
 OBJS = $(SOURCES: .c = .o)
 EXE = exe
 

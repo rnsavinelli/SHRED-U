@@ -1,23 +1,23 @@
 /*
  * main.c
- * 
+ *
  * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
- * 
+ *
  */
 
 #include "SDL_handler.h"
@@ -25,17 +25,16 @@
 
 int main(void)
 {
-	struct Resources core;
+    struct Resources core;
     struct Game data;
-    	
-	if(SDL_init_resources(&core) != ERROR)
-	{
-		init_game(&core, &data);
-		run_game(&core, &data);
-	}
-	
-	//quit_game(&data);
-	SDL_clean_resources(&core);
-	
+
+    if(SDL_init_resources(&core) != ERROR) {
+        game_init(&core, &data);
+        game_run(&core, &data);
+    }
+
+    /* game_quit(&data); */
+    SDL_clean_resources(&core);
+
     return 0;
 }

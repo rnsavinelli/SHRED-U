@@ -1,5 +1,5 @@
 /*
- * SDL_handler.h
+ * collisions.c
  *
  * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  *
@@ -20,29 +20,10 @@
  *
  */
 
-#ifndef SDL_HANDLER_H
-#define SDL_HANDLER_H
+#include "collisions.h"
+#include "game.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_timer.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
+void bound_detection(int window_width, int window_height, struct Game *data)
+{
 
-#include "SDL_window.h"
-#include "SDL_textures.h"
-#include "SDL_fonts.h"
-
-#define ERROR 1
-
-struct Resources {
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-
-    struct Textures textures;
-    struct Fonts fonts;
-};
-
-int SDL_init_resources(struct Resources *sdl);
-void SDL_clean_resources(struct Resources *sdl);
-
-#endif
+}
