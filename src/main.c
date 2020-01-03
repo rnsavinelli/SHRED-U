@@ -23,18 +23,24 @@
 #include "SDL_handler.h"
 #include "game.h"
 
-int main(void)
+int main(int argc, char** argv)
 {
-    struct Resources core;
-    struct Game data;
+    extern SDL_Resources core;
+    GameData game;
+	int status = 0;
 
-    if(SDL_init_resources(&core) != ERROR) {
-        game_init(&core, &data);
-        game_run(&core, &data);
+    if(SDL_InitResources(&core) != ERROR) {
+		printf("Launching game...\n");
+        GameInit(&game);
+        while(status != SDL_QUIT) {
+			status = KeyboardHandler();
+            GameRun(&game);
+        }
     }
-
-    /* game_quit(&data); */
-    SDL_clean_resources(&core);
+	
+	printf("Quitting the game...\n");
+    /* game_quit(&game); */
+    SDL_CleanResources(&core);
 
     return 0;
 }

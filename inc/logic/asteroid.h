@@ -1,7 +1,7 @@
 /*
- * SDL_handler.h
+ * collisions.h
  *
- * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
+ * Copyright 2020 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,33 +20,22 @@
  *
  */
 
-#ifndef SDL_HANDLER_H
-#define SDL_HANDLER_H
+#ifndef ASTEROID_H
+#define ASTEROID_H
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_timer.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
+#include "SDL_handler.h"
+#include "player.h"
+#include <stdbool.h>
 
-#include "SDL_window.h"
-#include "SDL_textures.h"
-#include "SDL_keyboard.h"
-#include "SDL_fonts.h"
+#define ASTEROID_SPEED	300
+#define N_ASTEROIDS	4
 
-#define ERROR 1
+struct Asteroid {
+    bool status;
+    SDL_Rect position;
+    struct Speed speed;
+};
 
-typedef struct Resources {
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-
-    struct Textures textures;
-    struct Fonts fonts;
-}
-SDL_Resources;
-
-SDL_Resources core;
-
-int SDL_InitResources(SDL_Resources *sdl);
-void SDL_CleanResources(SDL_Resources *sdl);
+void AsteroidInit(struct Asteroid *asteroid);
 
 #endif

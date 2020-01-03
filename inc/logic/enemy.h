@@ -1,7 +1,7 @@
 /*
- * spaceship.h
+ * enemy.h
  *
- * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
+ * Copyright 2020 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,22 @@
  *
  */
 
-#include <SDL2/SDL.h>
-#include "game.h"
+#ifndef ENEMY_H
+#define ENEMY_H
 
-void spaceship_movement(struct Game **data);
+#include "SDL_handler.h"
+#include "player.h"
+#include <stdbool.h>
+
+#define N_ENEMIES	30
+#define N_ROWS		3
+
+struct Enemy {
+    bool status;
+    SDL_Rect position;
+    struct Speed speed;
+};
+
+void EnemyInit(struct Enemy *enemy);
+
+#endif

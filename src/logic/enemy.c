@@ -1,7 +1,7 @@
 /*
- * SDL_handler.h
+ * enemy.c
  *
- * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
+ * Copyright 2020 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,33 +20,12 @@
  *
  */
 
-#ifndef SDL_HANDLER_H
-#define SDL_HANDLER_H
+#include "enemy.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_timer.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-
-#include "SDL_window.h"
-#include "SDL_textures.h"
-#include "SDL_keyboard.h"
-#include "SDL_fonts.h"
-
-#define ERROR 1
-
-typedef struct Resources {
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-
-    struct Textures textures;
-    struct Fonts fonts;
+void EnemyInit(struct Enemy *enemy)
+{
+    enemy->status = false;
+    //SDL_Rect position;
+    enemy->speed.x = 0;
+    enemy->speed.y = 0;	
 }
-SDL_Resources;
-
-SDL_Resources core;
-
-int SDL_InitResources(SDL_Resources *sdl);
-void SDL_CleanResources(SDL_Resources *sdl);
-
-#endif

@@ -20,8 +20,7 @@
  *
  */
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_timer.h>
+#include "SDL_handler.h"
 #include "SDL_textures.h"
 
 /* Loads game textures to memory */

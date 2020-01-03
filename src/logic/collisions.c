@@ -21,9 +21,22 @@
  */
 
 #include "collisions.h"
-#include "game.h"
 
-void bound_detection(int window_width, int window_height, struct Game *data)
+void BoundDetection(int window_w, int window_h, GameData *game)
 {
+	if (game->player.position.x <= 0) {
+        game->player.position.x = 0;
+    }
 
+	if (game->player.position.y <= 0) {
+        game->player.position.y = 0;
+    }
+
+	if (game->player.position.x >= window_w - game->player.position.w) {
+        game->player.position.x = window_w - game->player.position.w;
+    }
+
+	if (game->player.position.y >= window_h - game->player.position.h) {
+        game->player.position.y = window_h - game->player.position.h;
+    }
 }

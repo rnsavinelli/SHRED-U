@@ -20,6 +20,11 @@
  *
  */
 
+#ifndef COLLISIONS_H
+#define COLLISIONS_H
+
 #include "game.h"
 
-void bound_detection(int window_width, int window_height, struct Game *data);
+void BoundDetection(int window_width, int window_height, GameData *data);
+
+#endif

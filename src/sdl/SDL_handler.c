@@ -26,33 +26,12 @@
 #include "SDL_fonts.h"
 
 /* Initializes all core functions needed for the game to run */
-int SDL_init_resources(struct Resources *sdl)
+int SDL_InitResources(SDL_Resources *sdl)
 {
     printf("Initializing SDL subsystems...\n");
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         printf("Error initializing SDL: %s\n", SDL_GetError());
-        return ERROR;
-    }
-
-    printf("Initializing TTF...\n");
-
-    if (TTF_Init() != 0) {
-        printf("Failed to initialize TTF: %s\n", SDL_GetError());
-        return ERROR;
-    }
-
-    printf("Loading fonts...\n");
-
-    sdl->fonts.title = TTF_OpenFont(TITLE_FONT_PATH, 18);
-    if (sdl->fonts.title == NULL) {
-        printf("Failed to load font: %s\n",TTF_GetError());
-        return ERROR;
-    }
-
-    sdl->fonts.text = TTF_OpenFont(TEXT_FONT_PATH, 12);
-    if (sdl->fonts.text == NULL) {
-        printf("Failed to load font: %s\n",TTF_GetError());
         return ERROR;
     }
 
@@ -83,22 +62,44 @@ int SDL_init_resources(struct Resources *sdl)
     if(create_texture(&(sdl->renderer), &(sdl->textures.asteroid), ASTEROID_ASSET) == ERROR) {
         return ERROR;
     }
+    
+    printf("Initializing keyboard...\n");
+    KeyboardInit();
+    
+        printf("Initializing TTF...\n");
+
+    if (TTF_Init() != 0) {
+        printf("Failed to initialize TTF: %s\n", SDL_GetError());
+        return ERROR;
+    }
+
+    printf("Loading fonts...\n");
+
+    sdl->fonts.title = TTF_OpenFont(TITLE_FONT_PATH, 18);
+    if (sdl->fonts.title == NULL) {
+        printf("Failed to load font: %s\n",TTF_GetError());
+        return ERROR;
+    }
+
+    sdl->fonts.text = TTF_OpenFont(TEXT_FONT_PATH, 12);
+    if (sdl->fonts.text == NULL) {
+        printf("Failed to load font: %s\n",TTF_GetError());
+        return ERROR;
+    }
+    
+    printf("All resources were initialized.\n");
 
     return 0;
 }
 
 /* Cleans all used resources */
-void SDL_clean_resources(struct Resources *sdl)
+void SDL_CleanResources(SDL_Resources *sdl)
 {
-    if(sdl->renderer != NULL) {
-        SDL_DestroyRenderer(sdl->renderer);
-    }
-
-    if(sdl->window != NULL) {
-        SDL_DestroyWindow(sdl->window);
-    }
-
-    if(sdl->textures.player != NULL) {
+	if(sdl->textures.player != NULL || sdl->textures.enemy != NULL
+		|| sdl->textures.asteroid != NULL) {
+		printf("Destroying textures...\n");
+	}
+	if(sdl->textures.player != NULL) {
         SDL_DestroyTexture(sdl->textures.player);
     }
 
@@ -109,8 +110,19 @@ void SDL_clean_resources(struct Resources *sdl)
     if(sdl->textures.asteroid != NULL) {
         SDL_DestroyTexture(sdl->textures.asteroid);
     }
+    
+    printf("Terminating TTF API...\n");
+	TTF_Quit();
 
-    TTF_Quit();
+    if(sdl->renderer != NULL) {
+		printf("Destroying renderer...\n");
+        SDL_DestroyRenderer(sdl->renderer);
+    }
+
+    if(sdl->window != NULL) {
+		printf("Destroying window...\n");
+        SDL_DestroyWindow(sdl->window);
+    }
 
     SDL_Quit();
 

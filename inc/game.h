@@ -24,16 +24,10 @@
 #define GAME_H
 
 #include "SDL_handler.h"
+#include "player.h"
+#include "enemy.h"
+#include "asteroid.h"
 #include <stdbool.h>
-
-#define DEFAULT_SPEED	400
-#define BULLET_SPEED	300
-#define ASTEROID_SPEED	300
-
-#define N_BULLETS	20
-#define N_ASTEROIDS	4
-#define N_ENEMIES	30
-#define N_ROWS		3
 
 #define ERROR 1
 
@@ -43,51 +37,26 @@ enum APP_MENU {
     MENU_GAME_RESTART,
     MENU_GAME_OVER,
     MENU_INSERT_NAME,
-    MENU_EXIT
+    MENU_GAME_SCORES
 };
 
-struct Speed {
-    float x;
-    float y;
-};
-
-struct Bullets {
-    bool status;
-    float x;
-    float y;
-};
-
-struct Player {
-    int status;
-    int tolerance;
-    int score;
-    int hp;
-    SDL_Rect position;
-    struct Speed speed;
-    struct Bullets bullets[N_BULLETS];
-};
-
-struct Enemy {
-    bool status;
-    SDL_Rect position;
-    struct Speed speed;
-};
-
-struct Asteroid {
-    bool status;
-    SDL_Rect position;
-    struct Speed speed;
-};
-
-struct Game {
+typedef struct Game {
     int menu;
     struct Player player;
     struct Enemy enemy[N_ENEMIES];
     struct Asteroid asteroid[N_ASTEROIDS];
-};
+}
+GameData;
 
-void game_init(struct Resources *core, struct Game *data);
-void game_run(struct Resources *core, struct Game *data);
-void game_quit(struct Game *data);
+void GameInit(GameData *game);
+void GameRun(GameData *game);
+void GameQuit(GameData *game);
+
+void GameMainMenu();
+void GameStart(GameData *game);
+void GameRestart();
+void GameOver();
+void GameSave();
+void GameScores();
 
 #endif

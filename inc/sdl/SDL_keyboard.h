@@ -1,7 +1,7 @@
 /*
- * SDL_handler.h
+ * SDL_keyboard.h
  *
- * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
+ * Copyright 2020 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,33 +20,31 @@
  *
  */
 
-#ifndef SDL_HANDLER_H
-#define SDL_HANDLER_H
+#ifndef SDL_KEYBOARD_H
+#define SDL_KEYBOARD_H
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_timer.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
+#include "SDL_handler.h"
+#include <SDL2/SDL_keyboard.h>
+#include <SDL2/SDL_scancode.h>
+#include <SDL2/SDL_keycode.h>
+#include <stdbool.h>
 
-#include "SDL_window.h"
-#include "SDL_textures.h"
-#include "SDL_keyboard.h"
-#include "SDL_fonts.h"
+struct KeyboardInput {
+    bool up;
+    bool down;
+    bool left;
+    bool right;
+    bool enter;
+    bool space;
+    bool back;
+};
 
-#define ERROR 1
+struct KeyboardInput key_pressed;
 
-typedef struct Resources {
-    SDL_Window *window;
-    SDL_Renderer *renderer;
+void KeyboardInit(void);
 
-    struct Textures textures;
-    struct Fonts fonts;
-}
-SDL_Resources;
-
-SDL_Resources core;
-
-int SDL_InitResources(SDL_Resources *sdl);
-void SDL_CleanResources(SDL_Resources *sdl);
+int KeyboardHandler(void);
+void PrintKeyInfo(SDL_KeyboardEvent *key);
+void PrintModifiers(SDL_Keymod mod);
 
 #endif

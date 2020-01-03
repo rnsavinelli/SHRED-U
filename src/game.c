@@ -22,138 +22,72 @@
 
 #include "SDL_handler.h"
 #include "game.h"
+#include "collisions.h"
 
 /* Initializes game variables */
-void game_init(struct Resources *core, struct Game *data)
-{
-    /* Default values */
-    data->player.status = 0;
-    data->player.score = 0;
-    data->player.hp = 3;
-    data->menu = MENU_MAIN_MENU;
+void GameInit(GameData *game)
+{	
+	game->menu = MENU_GAME_START;
 
-    /* Player's position */
-    SDL_QueryTexture(core->textures.player, NULL, NULL, &(data->player.position.w), &(data->player.position.h));
-    data->player.position.x = (WINDOW_WIDTH - data->player.position.w) / 2;
-    data->player.position.y = (WINDOW_HEIGHT - data->player.position.h);
-
-    data->player.speed.x = DEFAULT_SPEED;
-    data->player.speed.y = DEFAULT_SPEED;
-
-    
+	PlayerInit(&(game->player));
+	
+	for(int i = 0; i < N_ENEMIES; i++) {
+		EnemyInit(&(game->enemy[i]));
+	}
+	
+	for(int i = 0; i < N_ASTEROIDS; i++) {
+		AsteroidInit(&(game->asteroid[i]));
+	}
 }
 
-void game_run(struct Resources *core, struct Game*data)
+void GameRun(GameData *game)
 {
-    bool close_window = false;
+	extern SDL_Resources core;
+	
+	switch(game->menu) {
+		case MENU_MAIN_MENU:
+			GameMainMenu();
+			break;
+		case MENU_GAME_START:
+			GameStart(game);
+			break;
+		case MENU_GAME_RESTART:
+			GameRestart();
+			break;
+		case MENU_GAME_OVER:
+			GameOver();
+			break;
+		case MENU_INSERT_NAME:
+			GameSave();
+			break;
+		case MENU_GAME_SCORES:
+			GameScores();
+			break;
+		default:
+			break;
+	}
 
-    int up = 0;
-    int down = 0;
-    int left = 0;
-    int right = 0;
+    SDL_RenderClear(core.renderer);
 
-    while (close_window != true) {
-        SDL_Event event;
+	SDL_RenderCopy(core.renderer, core.textures.player, NULL, &(game->player.position));
 
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-            case SDL_QUIT:
-                printf("SDL_QUIT event successfully requested.\n");
-                close_window = true;
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.scancode)
-                {
-                case SDL_SCANCODE_W:
-                case SDL_SCANCODE_UP:
-                    up = 1;
-                    break;
-                case SDL_SCANCODE_A:
-                case SDL_SCANCODE_LEFT:
-                    left = 1;
-                    break;
-                case SDL_SCANCODE_S:
-                case SDL_SCANCODE_DOWN:
-                    down = 1;
-                    break;
-                case SDL_SCANCODE_D:
-                case SDL_SCANCODE_RIGHT:
-                    right = 1;
-                    break;
-                default:
-                    break;
-                }
-                break;
-                
-            case SDL_KEYUP:
-                switch (event.key.keysym.scancode)
-                {
-                case SDL_SCANCODE_W:
-                case SDL_SCANCODE_UP:
-                    up = 0;
-                    break;
-                case SDL_SCANCODE_A:
-                case SDL_SCANCODE_LEFT:
-                    left = 0;
-                    break;
-                case SDL_SCANCODE_S:
-                case SDL_SCANCODE_DOWN:
-                    down = 0;
-                    break;
-                case SDL_SCANCODE_D:
-                case SDL_SCANCODE_RIGHT:
-                    right = 0;
-                    break;
-                default:
-                    break;
-                }
-                break;
-           default:
-                break;
-            }
-
-        }
-
-        data->player.speed.x = data->player.speed.y = 0;
-
-        if (up == 1 && down == 0) 
-        {
-            data->player.speed.y = DEFAULT_SPEED;
-        }
-
-        if (down == 1 && up == 0)
-        {
-            data->player.speed.y = -3*(DEFAULT_SPEED/4);
-        }
-
-        if (left == 1 && right == 0)
-        {
-            data->player.speed.x = -DEFAULT_SPEED;
-        }
-
-        if (right == 1 && left == 0)
-        {
-            data->player.speed.x = DEFAULT_SPEED;
-        }
-
-        if (data->player.position.x <= 0) data->player.position.x = 0;
-        if (data->player.position.y <= 0) data->player.position.y = 0;
-        if (data->player.position.x >= WINDOW_WIDTH - data->player.position.w) data->player.position.x = WINDOW_WIDTH - data->player.position.w;
-        if (data->player.position.y >= WINDOW_HEIGHT - data->player.position.h) data->player.position.y = WINDOW_HEIGHT - data->player.position.h;
-
-        data->player.position.x += (int) data->player.speed.x/100;
-        data->player.position.y -= (int) data->player.speed.y/100;
-
-        SDL_RenderClear(core->renderer);
-
-        SDL_RenderCopy(core->renderer, core->textures.player, NULL, &(data->player.position));
-
-        SDL_RenderPresent(core->renderer);
-        SDL_Delay(1000/60);
-    }
+	SDL_RenderPresent(core.renderer);
+	SDL_Delay(1000/60);
 }
 
-void game_quit(struct Game *data)
+void GameMainMenu(){}
+
+void GameStart(GameData *game) {
+	PlayerMovement(&(game->player));
+	BoundDetection(WINDOW_WIDTH, WINDOW_HEIGHT, game);
+}
+
+void GameRestart(){}
+void GameOver(){}
+void GameSave(){}
+void GameScores(){}
+
+void GameQuit(GameData *game)
 {
 
 }
