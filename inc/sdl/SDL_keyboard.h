@@ -35,8 +35,8 @@ struct KeyboardInput {
     bool left;
     bool right;
     bool enter;
+    bool pause;
     bool space;
-    bool back;
 };
 
 struct KeyboardInput key_pressed;

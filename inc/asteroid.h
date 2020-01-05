@@ -1,7 +1,7 @@
 /*
  * collisions.h
  *
- * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
+ * Copyright 2020 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,21 @@
  *
  */
 
-#ifndef COLLISIONS_H
-#define COLLISIONS_H
+#ifndef ASTEROID_H
+#define ASTEROID_H
 
-#include "game.h"
+#include <stdbool.h>
+#include "SDL_handler.h"
 
-void BoundDetection(int window_width, int window_height, GameData *data);
+#define ASTEROID_SPEED	150
+#define N_ASTEROIDS	3
+
+struct Asteroid {
+    SDL_Rect position;
+};
+
+void AsteroidsInit(int window_width, int window_height, struct Asteroid *asteroid);
+
+void Asteroids(int window_width, int window_height, struct Asteroid *asteroid);
 
 #endif

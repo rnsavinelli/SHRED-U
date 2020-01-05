@@ -28,28 +28,28 @@
 /* Initializes all core functions needed for the game to run */
 int SDL_InitResources(SDL_Resources *sdl)
 {
-    printf("Initializing SDL subsystems...\n");
+    printf("[STATUS] Initializing SDL subsystems...\n");
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-        printf("Error initializing SDL: %s\n", SDL_GetError());
+        printf("[WARNING] Error initializing SDL: %s\n", SDL_GetError());
         return ERROR;
     }
 
-    printf("Creating window...\n");
+    printf("[STATUS] Creating window...\n");
 
     if(create_window(&(sdl->window)) == ERROR ) {
-        printf("Failed to create the window: %s\n", SDL_GetError());
+        printf("[WARNING] Failed to create the window: %s\n", SDL_GetError());
         return ERROR ;
     }
 
-    printf("Creating renderer...\n");
+    printf("[STATUS] Creating renderer...\n");
 
     if(create_renderer(&(sdl->renderer), &(sdl->window)) == ERROR) {
-        printf("Failed to create the renderer: %s\n", SDL_GetError());
+        printf("[WARNING] Failed to create the renderer: %s\n", SDL_GetError());
         return ERROR;
     }
 
-    printf("Creating textures...\n");
+    printf("[STATUS] Creating textures...\n");
 
     if(create_texture(&(sdl->renderer), &(sdl->textures.player), PLAYER_ASSET) == ERROR) {
         return ERROR;
@@ -62,32 +62,40 @@ int SDL_InitResources(SDL_Resources *sdl)
     if(create_texture(&(sdl->renderer), &(sdl->textures.asteroid), ASTEROID_ASSET) == ERROR) {
         return ERROR;
     }
-    
-    printf("Initializing keyboard...\n");
-    KeyboardInit();
-    
-        printf("Initializing TTF...\n");
 
-    if (TTF_Init() != 0) {
-        printf("Failed to initialize TTF: %s\n", SDL_GetError());
+    if(create_texture(&(sdl->renderer), &(sdl->textures.bullet_zero), BULLET_0) == ERROR) {
         return ERROR;
     }
 
-    printf("Loading fonts...\n");
+    if(create_texture(&(sdl->renderer), &(sdl->textures.bullet_one), BULLET_1) == ERROR) {
+        return ERROR;
+    }
+
+    printf("[STATUS] Initializing keyboard...\n");
+    KeyboardInit();
+
+    printf("[STATUS] Initializing TTF...\n");
+
+    if (TTF_Init() != 0) {
+        printf("[WARNING] Failed to initialize TTF: %s\n", SDL_GetError());
+        return ERROR;
+    }
+
+    printf("[STATUS] Loading fonts...\n");
 
     sdl->fonts.title = TTF_OpenFont(TITLE_FONT_PATH, 18);
     if (sdl->fonts.title == NULL) {
-        printf("Failed to load font: %s\n",TTF_GetError());
+        printf("[WARNING] Failed to load font: %s\n",TTF_GetError());
         return ERROR;
     }
 
     sdl->fonts.text = TTF_OpenFont(TEXT_FONT_PATH, 12);
     if (sdl->fonts.text == NULL) {
-        printf("Failed to load font: %s\n",TTF_GetError());
+        printf("[WARNING] Failed to load font: %s\n",TTF_GetError());
         return ERROR;
     }
-    
-    printf("All resources were initialized.\n");
+
+    printf("[STATUS] All resources were initialized.\n");
 
     return 0;
 }
@@ -95,11 +103,12 @@ int SDL_InitResources(SDL_Resources *sdl)
 /* Cleans all used resources */
 void SDL_CleanResources(SDL_Resources *sdl)
 {
-	if(sdl->textures.player != NULL || sdl->textures.enemy != NULL
-		|| sdl->textures.asteroid != NULL) {
-		printf("Destroying textures...\n");
-	}
-	if(sdl->textures.player != NULL) {
+    if(sdl->textures.player != NULL || sdl->textures.enemy != NULL || sdl->textures.asteroid != NULL
+        || sdl->textures.bullet_zero != NULL || sdl->textures.bullet_one != NULL) {
+        printf("[STATUS] Destroying textures...\n");
+    }
+
+    if(sdl->textures.player != NULL) {
         SDL_DestroyTexture(sdl->textures.player);
     }
 
@@ -110,21 +119,29 @@ void SDL_CleanResources(SDL_Resources *sdl)
     if(sdl->textures.asteroid != NULL) {
         SDL_DestroyTexture(sdl->textures.asteroid);
     }
-    
-    printf("Terminating TTF API...\n");
-	TTF_Quit();
+
+    if(sdl->textures.bullet_zero != NULL) {
+        SDL_DestroyTexture(sdl->textures.bullet_zero);
+    }
+
+    if(sdl->textures.bullet_one != NULL) {
+        SDL_DestroyTexture(sdl->textures.bullet_one);
+    }
+
+    printf("[STATUS] Terminating TTF API...\n");
+    TTF_Quit();
 
     if(sdl->renderer != NULL) {
-		printf("Destroying renderer...\n");
+        printf("[STATUS] Destroying renderer...\n");
         SDL_DestroyRenderer(sdl->renderer);
     }
 
     if(sdl->window != NULL) {
-		printf("Destroying window...\n");
+        printf("[STATUS] Destroying window...\n");
         SDL_DestroyWindow(sdl->window);
     }
 
     SDL_Quit();
 
-    printf("All initialized SDL subsystems were cleaned up.\n");
+    printf("[STATUS] All initialized SDL subsystems were cleaned up.\n");
 }

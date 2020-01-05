@@ -9,5 +9,4 @@ Commons, 171 Second Street, Suite 300, San Francisco, California 94105, USA.
 To view a copy of the GNU LGPL v3 license visit
 https://www.gnu.org/licenses/lgpl-3.0.txt or see the `LICENSE` file.
 
-GitHub: https://gitlab.gnome.org/GNOME/adwaita-icon-theme 
-
+GitLab: https://gitlab.gnome.org/GNOME/adwaita-icon-theme

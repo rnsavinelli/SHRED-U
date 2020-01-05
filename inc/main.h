@@ -1,7 +1,7 @@
 /*
- * enemy.c
+ * main.h
  *
- * Copyright 2020 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
+ * Copyright 2019 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +20,15 @@
  *
  */
 
-#include "enemy.h"
+#ifndef MAIN_H
+#define MAIN_H
 
-void EnemyInit(struct Enemy *enemy)
-{
-    enemy->status = false;
-    //SDL_Rect position;
-    enemy->speed.x = 0;
-    enemy->speed.y = 0;	
-}
+#include <stdbool.h>
+
+#include "game.h"
+#include "player.h"
+#include "enemy.h"
+#include "asteroid.h"
+#include "collisions.h"
+
+#endif

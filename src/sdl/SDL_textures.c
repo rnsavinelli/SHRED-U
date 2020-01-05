@@ -31,7 +31,7 @@ int create_texture(SDL_Renderer **renderer, SDL_Texture **texture, char *image_p
     /* Player's surface*/
     surface = IMG_Load(image_path);
     if (surface == NULL) {
-        printf("Error loading surface.\n");
+        printf("[WARNING] Error loading surface.\n");
         return ERROR;
     }
 
@@ -40,7 +40,7 @@ int create_texture(SDL_Renderer **renderer, SDL_Texture **texture, char *image_p
         SDL_FreeSurface(surface);
 
         if (*texture == NULL) {
-            printf("Error creating texture: %s\n", SDL_GetError());
+            printf("[WARNING] Error creating texture: %s\n", SDL_GetError());
             return ERROR;
         }
     }

@@ -25,9 +25,8 @@
 
 #include "SDL_handler.h"
 #include "player.h"
-#include "enemy.h"
 #include "asteroid.h"
-#include <stdbool.h>
+#include "enemy.h"
 
 #define ERROR 1
 

@@ -29,6 +29,8 @@
 #define PLAYER_ASSET	"assets/images/drive-harddisk.png"
 #define ENEMY_ASSET		"assets/images/text-x-generic.png"
 #define ASTEROID_ASSET	"assets/images/dialog-error.png"
+#define BULLET_0        "assets/images/zero.png"
+#define BULLET_1        "assets/images/one.png"
 
 #define ERROR 1
 
@@ -37,6 +39,8 @@ struct Textures {
     SDL_Texture *player;
     SDL_Texture *enemy;
     SDL_Texture *asteroid;
+    SDL_Texture *bullet_zero;
+    SDL_Texture *bullet_one;
 };
 
 int create_texture(SDL_Renderer **renderer, SDL_Texture **texture, char *image_path);

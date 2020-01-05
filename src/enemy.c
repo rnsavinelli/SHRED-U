@@ -1,5 +1,5 @@
 /*
- * asteroid.c
+ * enemy.c
  *
  * Copyright 2020 Roberto Nicolás Savinelli <rnsavinelli@est.frba.utn.edu.ar>
  *
@@ -20,12 +20,12 @@
  *
  */
 
-#include "asteroid.h"
+#include "enemy.h"
 
-void AsteroidInit(struct Asteroid *asteroid)
+void EnemyInit(struct Enemy *enemy)
 {
-    asteroid->status = false;
+    enemy->status = false;
     //SDL_Rect position;
-    asteroid->speed.x = 0;
-    asteroid->speed.y = 0;
+    enemy->speed.x = 0;
+    enemy->speed.y = 0;
 }

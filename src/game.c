@@ -20,72 +20,79 @@
  *
  */
 
+#include <time.h>
+#include <stdlib.h>
+
 #include "SDL_handler.h"
 #include "game.h"
-#include "collisions.h"
+#include "main.h"
 
 /* Initializes game variables */
 void GameInit(GameData *game)
-{	
-	game->menu = MENU_GAME_START;
+{
+    game->menu = MENU_GAME_START;
 
-	PlayerInit(&(game->player));
-	
-	for(int i = 0; i < N_ENEMIES; i++) {
-		EnemyInit(&(game->enemy[i]));
-	}
-	
-	for(int i = 0; i < N_ASTEROIDS; i++) {
-		AsteroidInit(&(game->asteroid[i]));
-	}
+	srand(time(NULL));
+
+    PlayerInit(&(game->player));
+
+    for(int i = 0; i < N_ENEMIES; i++) {
+        EnemyInit(&(game->enemy[i]));
+    }
+
+	AsteroidsInit(WINDOW_WIDTH, WINDOW_HEIGHT, game->asteroid);
 }
 
 void GameRun(GameData *game)
 {
-	extern SDL_Resources core;
-	
-	switch(game->menu) {
-		case MENU_MAIN_MENU:
-			GameMainMenu();
-			break;
-		case MENU_GAME_START:
-			GameStart(game);
-			break;
-		case MENU_GAME_RESTART:
-			GameRestart();
-			break;
-		case MENU_GAME_OVER:
-			GameOver();
-			break;
-		case MENU_INSERT_NAME:
-			GameSave();
-			break;
-		case MENU_GAME_SCORES:
-			GameScores();
-			break;
-		default:
-			break;
-	}
-
+    extern SDL_Resources core;
+    
     SDL_RenderClear(core.renderer);
 
+    switch(game->menu) {
+    case MENU_MAIN_MENU:
+        GameMainMenu();
+        break;
+    case MENU_GAME_START:
+        GameStart(game);
+        break;
+    case MENU_GAME_RESTART:
+        GameRestart();
+        break;
+    case MENU_GAME_OVER:
+        GameOver();
+        break;
+    case MENU_INSERT_NAME:
+        GameSave();
+        break;
+    case MENU_GAME_SCORES:
+        GameScores();
+        break;
+    default:
+        break;
+    }
+
+    SDL_RenderPresent(core.renderer);
+    SDL_Delay(1000/60);
+}
+
+void GameMainMenu() {}
+
+void GameStart(GameData *game)
+{
+    PlayerMovement(&(game->player));
+    PlayerBullets(&(game->player));
+    BoundDetection(WINDOW_WIDTH, WINDOW_HEIGHT, game);
+    
+    Asteroids(WINDOW_WIDTH, WINDOW_HEIGHT, game->asteroid);
+    
 	SDL_RenderCopy(core.renderer, core.textures.player, NULL, &(game->player.position));
-
-	SDL_RenderPresent(core.renderer);
-	SDL_Delay(1000/60);
 }
 
-void GameMainMenu(){}
-
-void GameStart(GameData *game) {
-	PlayerMovement(&(game->player));
-	BoundDetection(WINDOW_WIDTH, WINDOW_HEIGHT, game);
-}
-
-void GameRestart(){}
-void GameOver(){}
-void GameSave(){}
-void GameScores(){}
+void GameRestart() {}
+void GameOver() {}
+void GameSave() {}
+void GameScores() {}
 
 void GameQuit(GameData *game)
 {
