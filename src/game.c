@@ -35,18 +35,14 @@ void GameInit(GameData *game)
 	srand(time(NULL));
 
     PlayerInit(&(game->player));
-
-    for(int i = 0; i < N_ENEMIES; i++) {
-        EnemyInit(&(game->enemy[i]));
-    }
-
+    EnemiesInit(WINDOW_WIDTH, WINDOW_HEIGHT, game->enemy);
 	AsteroidsInit(WINDOW_WIDTH, WINDOW_HEIGHT, game->asteroid);
 }
 
 void GameRun(GameData *game)
 {
     extern SDL_Resources core;
-    
+
     SDL_RenderClear(core.renderer);
 
     switch(game->menu) {
@@ -82,10 +78,13 @@ void GameStart(GameData *game)
 {
     PlayerMovement(&(game->player));
     PlayerBullets(&(game->player));
-    BoundDetection(WINDOW_WIDTH, WINDOW_HEIGHT, game);
-    
+
+    Enemies(WINDOW_WIDTH, WINDOW_HEIGHT, game->enemy);
     Asteroids(WINDOW_WIDTH, WINDOW_HEIGHT, game->asteroid);
-    
+
+    BoundDetection(WINDOW_WIDTH, WINDOW_HEIGHT, game);
+    CollisionHandler(WINDOW_WIDTH, WINDOW_HEIGHT, game);
+
 	SDL_RenderCopy(core.renderer, core.textures.player, NULL, &(game->player.position));
 }
 

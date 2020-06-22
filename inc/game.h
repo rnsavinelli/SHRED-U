@@ -42,7 +42,7 @@ enum APP_MENU {
 typedef struct Game {
     int menu;
     struct Player player;
-    struct Enemy enemy[N_ENEMIES];
+    struct Enemy enemy[N_ENEMIES*N_ROWS];
     struct Asteroid asteroid[N_ASTEROIDS];
 }
 GameData;

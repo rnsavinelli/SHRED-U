@@ -34,10 +34,10 @@ void PlayerInit(struct Player *player)
     player->score = 0;
     player->hp = 3;
 
-    SDL_QueryTexture(core.textures.player, NULL, NULL, 
-					&(player->position.w), 
+    SDL_QueryTexture(core.textures.player, NULL, NULL,
+					&(player->position.w),
 					&(player->position.h));
-					
+
     player->position.x = (WINDOW_WIDTH - player->position.w) / 2;
     player->position.y = (WINDOW_HEIGHT - player->position.h);
 
@@ -81,45 +81,48 @@ void PlayerMovement(struct Player *player)
 void PlayerBullets(struct Player *player)
 {
     extern struct KeyboardInput key_pressed;
-        
+
     int variant = rand()%2;
-    
+
     if (key_pressed.space) {
 		for (int i = 0; i < N_BULLETS; i++) {
 			if(!(player->bullets[i]).status) {
 				(player->bullets[i]).position.x = player->position.x + player->position.w/2
 												- (player->bullets[i]).position.w/2;
-												
+
 				(player->bullets[i]).position.y = player->position.y + player->bullets[i].position.h/2;
-				
+
 				(player->bullets[i]).status = true;
-				
+
 				if (variant == 0) {
 					player->bullets[i].texture = core.textures.bullet_zero;
 				}
-				
+
 				else if (variant == 1) {
 					player->bullets[i].texture = core.textures.bullet_one;
 				}
-				
-				SDL_QueryTexture(player->bullets[i].texture, NULL, NULL, 
-								&(player->bullets[i].position.w), 
-								&(player->bullets[i].position.h));						
+
+				SDL_QueryTexture(player->bullets[i].texture, NULL, NULL,
+								&(player->bullets[i].position.w),
+								&(player->bullets[i].position.h));
 				break;
 			}
-		}	
+		}
 	}
-	
+
     for (int i = 0; i < N_BULLETS; i++) {
         if(player->bullets[i].status) {
             player->bullets[i].position.y -= (int) BULLET_SPEED/100;
-            
-			SDL_RenderCopy(core.renderer, player->bullets[i].texture, 
+
+			SDL_RenderCopy(core.renderer, player->bullets[i].texture,
 							NULL, &(player->bullets[i].position));
 
             if(player->bullets[i].position.y < 0) {
 				player->bullets[i].status = false;
+                player->bullets[i].position.y = 0;
+                player->bullets[i].position.x = 0;
             }
         }
     }
+
 }

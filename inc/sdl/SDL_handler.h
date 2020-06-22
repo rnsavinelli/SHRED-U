@@ -44,7 +44,7 @@ typedef struct Resources {
 }
 SDL_Resources;
 
-SDL_Resources core;
+extern SDL_Resources core;
 
 int SDL_InitResources(SDL_Resources *sdl);
 void SDL_CleanResources(SDL_Resources *sdl);

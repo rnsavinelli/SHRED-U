@@ -23,10 +23,11 @@
 #ifndef SDL_KEYBOARD_H
 #define SDL_KEYBOARD_H
 
-#include "SDL_handler.h"
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_keyboard.h>
 #include <SDL2/SDL_scancode.h>
 #include <SDL2/SDL_keycode.h>
+
 #include <stdbool.h>
 
 struct KeyboardInput {
@@ -38,8 +39,6 @@ struct KeyboardInput {
     bool pause;
     bool space;
 };
-
-struct KeyboardInput key_pressed;
 
 void KeyboardInit(void);
 

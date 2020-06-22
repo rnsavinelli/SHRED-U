@@ -27,8 +27,10 @@
 #include "player.h"
 #include <stdbool.h>
 
-#define N_ENEMIES	30
-#define N_ROWS		3
+#define ENEMY_SPEED             1
+#define ENEMY_SPEED_INCREMENT   1
+#define N_ENEMIES	            10
+#define N_ROWS		            3
 
 struct Enemy {
     bool status;
@@ -36,6 +38,10 @@ struct Enemy {
     struct Speed speed;
 };
 
-void EnemyInit(struct Enemy *enemy);
+void EnemiesInit(int window_width, int window_height, struct Enemy *enemy);
+void EnemiesGenerate(int window_width, int window_height, struct Enemy *enemy);
+void EnemiesMove(int window_width, int window_height, struct Enemy *enemy);
+void Enemies(int window_width, int window_height, struct Enemy *enemy);
+void EnemiesDraw(struct Enemy *enemy);
 
 #endif

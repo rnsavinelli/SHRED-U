@@ -27,8 +27,8 @@
 #include <SDL2/SDL_image.h>
 
 #define PLAYER_ASSET	"assets/images/drive-harddisk.png"
-#define ENEMY_ASSET		"assets/images/text-x-generic.png"
-#define ASTEROID_ASSET	"assets/images/dialog-error.png"
+#define ENEMY_ASSET		"assets/images/x-office-spreadsheet.png"
+#define ASTEROID_ASSET	"assets/images/process-stop.png"
 #define BULLET_0        "assets/images/zero.png"
 #define BULLET_1        "assets/images/one.png"
 

@@ -25,6 +25,8 @@
 #include "SDL_textures.h"
 #include "SDL_fonts.h"
 
+SDL_Resources core;
+
 /* Initializes all core functions needed for the game to run */
 int SDL_InitResources(SDL_Resources *sdl)
 {

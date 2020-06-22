@@ -22,6 +22,8 @@
 
 #include "SDL_keyboard.h"
 
+struct KeyboardInput key_pressed;
+
 void KeyboardInit()
 {
     extern struct KeyboardInput key_pressed;
@@ -49,7 +51,7 @@ int KeyboardHandler(void)
             switch (event.key.keysym.scancode) {
 			case SDL_SCANCODE_ESCAPE:
 				event.type = SDL_QUIT;
-				break;				
+				break;
             case SDL_SCANCODE_W:
             case SDL_SCANCODE_UP:
                 key_pressed.up = true;
@@ -105,10 +107,10 @@ int KeyboardHandler(void)
 				break;
 			case SDL_SCANCODE_SPACE:
 				key_pressed.space = false;
-				break; 
+				break;
 			case SDL_SCANCODE_P:
 				key_pressed.pause = false;
-				break;           
+				break;
             default:
                 break;
             }
