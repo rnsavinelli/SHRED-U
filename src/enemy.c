@@ -22,42 +22,42 @@
 
 #include "enemy.h"
 
-void EnemiesInit(int window_width, int window_height, struct Enemy *enemy)
+void enemiesInit(int window_width, int window_height, struct Enemy *enemy)
 {
 	extern SDL_Resources core;
 
-    for(int i = 0; i < N_ENEMIES*N_ROWS; i++) {
+    for(int i = 0; i < (N_ENEMIES*N_ROWS); i++) {
         enemy[i].status = false;
-
+       
 		SDL_QueryTexture(core.textures.enemy, NULL, NULL,
 						&(enemy[i].position.w),
 						&(enemy[i].position.h));
-
-        enemy[i].position.x = 0;
-		enemy[i].position.y = 0;
-
+	
+        enemy[i].position.x = window_width;
+		enemy[i].position.y = window_height;
+		
         enemy[i].speed.x = 0;
         enemy[i].speed.y = ENEMY_SPEED;
 	}
 }
 
-void Enemies(int window_width, int window_height, struct Enemy *enemy)
+void enemies(int window_width, int window_height, struct Enemy *enemy)
 {
-    EnemiesGenerate(window_width, window_height, enemy);
-    EnemiesMove(window_width, window_height, enemy);
-    EnemiesDraw(enemy);
+    enemiesGenerate(window_width, window_height, enemy);
+    enemiesMove(window_width, window_height, enemy);
+    enemiesDraw(enemy);
 }
 
-void EnemiesDraw(struct Enemy *enemy)
+void enemiesDraw(struct Enemy *enemy)
 {
     extern SDL_Resources core;
 
-    for(int i = 0; i < N_ENEMIES*N_ROWS ; i++)
-	SDL_RenderCopy(core.renderer, core.textures.enemy,
+    for(int i = 0; i < (N_ENEMIES*N_ROWS); i++)
+		SDL_RenderCopy(core.renderer, core.textures.enemy,
 						NULL, &(enemy[i].position));
 }
 
-void EnemiesGenerate(int window_width, int window_height, struct Enemy *enemy)
+void enemiesGenerate(int window_width, int window_height, struct Enemy *enemy)
 {
     int false_enemies = 0;
     int random;
@@ -75,26 +75,26 @@ void EnemiesGenerate(int window_width, int window_height, struct Enemy *enemy)
     /* symmetric fist wave: not random */
     /* They all have the same speed */
     if (enemy->speed.y == ENEMY_SPEED) {
-        random = 2;
+        random = 1;
     }
-
+    
     else {
         random = (rand() % 4) + 1;
     }
 
     /* enemy generation */
-    if (false_enemies == N_ENEMIES * N_ROWS) {
+    if (false_enemies == (N_ENEMIES*N_ROWS)) {
         if (random == 1) {
             for(int j = 0; j < N_ROWS; j++) {
                 for(int i = 0; i < N_ENEMIES; i++) {
                     enemy[(N_ENEMIES * j) + i].status = true;
                     enemy[(N_ENEMIES * j) + i].position.x = window_width/4 + (k * i);
-                    enemy[(N_ENEMIES * j) + i].position.y = -enemy->position.h * (j + 1);
+                    enemy[(N_ENEMIES * j) + i].position.y = -enemy->position.h * (j+1);
                 }
             }
 
         }
-
+	}
 /*
         else if (random == 2) {
             for(j = 0; j < N_ROWS; j++) {
@@ -131,32 +131,43 @@ void EnemiesGenerate(int window_width, int window_height, struct Enemy *enemy)
                 }
             }
         }
-*/
 
         for(int j = 0; j < N_ROWS; j++)
             for(int i = 0; i < N_ENEMIES; i++)
                  if (enemy[(N_ENEMIES * j) + i].speed.y == ENEMY_SPEED)
                     enemy[(N_ENEMIES * j) + i].speed.y += ENEMY_SPEED_INCREMENT;
 
-        /*else {
-            (app_struct->gameplay).velocidad += 0.03;
-        }*/
-    }
-
+				else {
+					(app_struct->gameplay).velocidad += 0.03;
+				}
+    }*/
 }
 
-void EnemiesMove(int window_width, int window_height, struct Enemy *enemy)
+void enemiesMove(int window_width, int window_height, struct Enemy *enemy)
+{
+    for(int j = 0; j < N_ROWS; j++)
+        for(int i = 0; i < N_ENEMIES; i++)
+            if(enemy[(N_ENEMIES * j) + i].status == true)
+                enemy[(N_ENEMIES * j) + i].position.y += enemy[(N_ENEMIES * j) + i].speed.y/100;
+}
+
+void enemiesBounds(int window_width, int window_height, struct Enemy *enemy)
 {
     for(int j = 0; j < N_ROWS; j++) {
         for(int i = 0; i < N_ENEMIES; i++) {
-            if(enemy[(N_ENEMIES * j) + i].status == true) {
-                enemy[(N_ENEMIES * j) + i].position.y += enemy[(N_ENEMIES * j) + i].speed.y;
+			if(enemy[(N_ENEMIES * j) + i].position.y > window_height) {
+				enemy[(N_ENEMIES * j) + i].status = false;
+				enemy[(N_ENEMIES * j) + i].position.x = window_width;
+				enemy[(N_ENEMIES * j) + i].position.y = window_height;
+/*
+				if (enemy[(N_ENEMIES * j) + i].speed.y >= 2*ENEMY_SPEED)
+					enemy[(N_ENEMIES * j) + i].speed.y += ENEMY_SPEED_INCREMENT;
 
-                if(enemy[(N_ENEMIES * j) + i].position.y > window_height) {
-                    enemy[(N_ENEMIES * j) + i].status = false;
-                    //((app_struct->gameplay).tolerance)--;
-                }
-            }
-        }
-    }
+				else
+					enemy[(N_ENEMIES * j) + i].speed.y += ENEMY_SPEED_INCREMENT/2;
+*/
+				//((app_struct->gameplay).tolerance)--;
+			}
+		}
+	}
 }

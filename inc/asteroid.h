@@ -27,14 +27,14 @@
 #include "SDL_handler.h"
 
 #define ASTEROID_SPEED	150
-#define N_ASTEROIDS	3
+#define N_ASTEROIDS	4
 
 struct Asteroid {
     SDL_Rect position;
 };
 
-void AsteroidsInit(int window_width, int window_height, struct Asteroid *asteroid);
-
-void Asteroids(int window_width, int window_height, struct Asteroid *asteroid);
+void asteroids(int window_width, int window_height, struct Asteroid *asteroid);
+void asteroidsInit(int window_width, int window_height, struct Asteroid *asteroid);
+void asteroidsBounds(int window_width, int window_height, struct Asteroid *asteroid);
 
 #endif

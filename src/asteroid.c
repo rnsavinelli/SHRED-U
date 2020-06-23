@@ -25,7 +25,7 @@
 #include "SDL_handler.h"
 #include "asteroid.h"
 
-void AsteroidsInit(int window_width, int window_height, struct Asteroid *asteroid)
+void asteroidsInit(int window_width, int window_height, struct Asteroid *asteroid)
 {
 	extern SDL_Resources core;	
 	
@@ -39,20 +39,25 @@ void AsteroidsInit(int window_width, int window_height, struct Asteroid *asteroi
 	}
 }
 
-void Asteroids(int window_width, int window_height, struct Asteroid *asteroid)
+void asteroids(int window_width, int window_height, struct Asteroid *asteroid)
 {
 	extern SDL_Resources core;
 	
     for(int i = 0; i < N_ASTEROIDS; i++) {
         asteroid[i].position.y += ASTEROID_SPEED/100;
-
-        if(asteroid[i].position.y > window_height + asteroid[i].position.w) {
-			(asteroid[i]).position.x = rand() % (window_width/2 - asteroid[i].position.w) 
-										+ (window_width/4) + asteroid[i].position.w/2;
-            (asteroid[i]).position.y = - asteroid[i].position.h;
-        }
  
 		SDL_RenderCopy(core.renderer, core.textures.asteroid, 
 						NULL, &(asteroid[i].position));						
     }
+}
+
+void asteroidsBounds(int window_width, int window_height, struct Asteroid *asteroid)
+{
+	for(int i = 0; i < N_ASTEROIDS; i++) {
+		if(asteroid[i].position.y > window_height + asteroid[i].position.w) {
+			(asteroid[i]).position.x = rand() % (window_width/2 - asteroid[i].position.w) 
+										+ (window_width/4) + asteroid[i].position.w/2;
+			(asteroid[i]).position.y = - asteroid[i].position.h;
+		}
+	}
 }

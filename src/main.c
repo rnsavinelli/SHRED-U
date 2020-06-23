@@ -28,19 +28,16 @@ int main(int argc, char** argv)
 {
     extern SDL_Resources core;
     GameData game;
-    int status = 0;
 
     if(SDL_InitResources(&core) != ERROR) {
-        printf("[STATUS] Launching game...\n");
+        printf("[STATUS] Launching the game...\n");
         GameInit(&game);
-        while(status != SDL_QUIT) {
-            status = KeyboardHandler();
+        while(KeyboardHandler() != SDL_QUIT) {            			
             GameRun(&game);
         }
     }
 
-    printf("[STATUS] Quitting the game...\n");
-    /* game_quit(&game); */
+    printf("[STATUS] Exiting the game...\n");
     SDL_CleanResources(&core);
 
     return 0;

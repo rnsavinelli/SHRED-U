@@ -26,22 +26,10 @@
 
 void BoundDetection(int window_w, int window_h, GameData *game)
 {
-    if (game->player.position.x <= window_w/4) {
-        game->player.position.x = window_w/4;
-    }
-
-    if (game->player.position.y <= 0) {
-        game->player.position.y = 0;
-    }
-
-    if (game->player.position.x >= window_w - game->player.position.w - window_w/4) {
-        game->player.position.x = window_w - game->player.position.w - window_w/4;
-    }
-
-    if (game->player.position.y >= window_h - game->player.position.h) {
-        game->player.position.y = window_h - game->player.position.h;
-    }
-
+	playerBounds(window_w, window_h, &(game->player));
+	bulletsBounds(window_w, window_h, &(game->player));
+	enemiesBounds(window_w, window_h, game->enemy);
+	asteroidsBounds(window_w, window_h, game->asteroid);
 }
 
 bool CollisionDetection(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2)
@@ -111,7 +99,7 @@ bool CollisionHandler(int window_width, int window_height, GameData *game)
                 collision = true;
             }
 
-            for(int k = 0; k < N_BULLETS; k++) {
+			for(int k = 0; k < N_BULLETS; k++) {
                 bullet_y = game->player.bullets[k].position.y;
                 bullet_x = game->player.bullets[k].position.x;
 

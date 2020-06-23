@@ -26,7 +26,7 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
-#define N_BULLETS	55
+#define N_BULLETS	12
 
 #define DEFAULT_SPEED	500
 #define BULLET_SPEED	1200
@@ -54,9 +54,16 @@ struct Player {
     struct Bullets bullets[N_BULLETS];
 };
 
-void PlayerInit(struct Player *player);
+void player(int window_width, int window_height, struct Player *player);
+void playerInit(int window_width, int window_height, struct Player *player);
+void playerBounds(int window_width, int window_height, struct Player *player);
+void playerDraw(struct Player *player);
 
-void PlayerMovement(struct Player *player);
-void PlayerBullets(struct Player *player);
+void bullets(int window_width, int window_height, struct Player *player);
+void bulletsInit(int window_width, int window_height, struct Player *player);
+void bulletsHandler(int window_width, int window_height, struct Player *player);
+void bulletsMove(int window_width, int window_height, struct Player *player);
+void bulletsBounds(int window_width, int window_height, struct Player *player);
+void bulletsDraw(struct Player *player);
 
 #endif

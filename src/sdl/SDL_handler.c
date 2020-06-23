@@ -85,13 +85,13 @@ int SDL_InitResources(SDL_Resources *sdl)
 
     printf("[STATUS] Loading fonts...\n");
 
-    sdl->fonts.title = TTF_OpenFont(TITLE_FONT_PATH, 18);
+    sdl->fonts.title = TTF_OpenFont(TITLE_FONT_PATH, 40);
     if (sdl->fonts.title == NULL) {
         printf("[WARNING] Failed to load font: %s\n",TTF_GetError());
         return ERROR;
     }
 
-    sdl->fonts.text = TTF_OpenFont(TEXT_FONT_PATH, 12);
+    sdl->fonts.text = TTF_OpenFont(TEXT_FONT_PATH, 24);
     if (sdl->fonts.text == NULL) {
         printf("[WARNING] Failed to load font: %s\n",TTF_GetError());
         return ERROR;

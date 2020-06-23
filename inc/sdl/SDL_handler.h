@@ -38,7 +38,7 @@
 typedef struct Resources {
     SDL_Window *window;
     SDL_Renderer *renderer;
-
+	
     struct Textures textures;
     struct Fonts fonts;
 }

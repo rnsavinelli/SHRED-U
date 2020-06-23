@@ -30,24 +30,29 @@
 /* Initializes game variables */
 void GameInit(GameData *game)
 {
-    game->menu = MENU_GAME_START;
+    game->menu = MENU_MAIN_MENU;
 
 	srand(time(NULL));
 
-    PlayerInit(&(game->player));
-    EnemiesInit(WINDOW_WIDTH, WINDOW_HEIGHT, game->enemy);
-	AsteroidsInit(WINDOW_WIDTH, WINDOW_HEIGHT, game->asteroid);
+    playerInit(WINDOW_WIDTH, WINDOW_HEIGHT, &(game->player));
+    bulletsInit(WINDOW_WIDTH, WINDOW_HEIGHT, &(game->player));
+    enemiesInit(WINDOW_WIDTH, WINDOW_HEIGHT, game->enemy);
+	asteroidsInit(WINDOW_WIDTH, WINDOW_HEIGHT, game->asteroid);
 }
 
 void GameRun(GameData *game)
 {
     extern SDL_Resources core;
+    extern struct KeyboardInput key_pressed;    
 
     SDL_RenderClear(core.renderer);
 
     switch(game->menu) {
     case MENU_MAIN_MENU:
         GameMainMenu();
+		if(key_pressed.enter) {
+			game->menu = MENU_GAME_START;
+		}
         break;
     case MENU_GAME_START:
         GameStart(game);
@@ -72,20 +77,63 @@ void GameRun(GameData *game)
     SDL_Delay(1000/60);
 }
 
-void GameMainMenu() {}
+void GameMainMenu()
+{
+    extern SDL_Resources core;
+
+	SDL_Color Yellow = {255, 215, 0};
+	SDL_Color White = {255, 255, 255};    
+    
+    SDL_Surface* surfaceText;
+	SDL_Texture* Text;
+	SDL_Rect Text_rect;
+
+	/* TITLE */
+	surfaceText = TTF_RenderText_Solid(core.fonts.title, "SHRED -U", Yellow);
+	Text = SDL_CreateTextureFromSurface(core.renderer, surfaceText);
+	
+	Text_rect.w = surfaceText->w;
+	Text_rect.h = surfaceText->h;
+	Text_rect.x = WINDOW_WIDTH/2 - surfaceText->w/2;
+	Text_rect.y = WINDOW_HEIGHT/4;
+
+	SDL_RenderCopy(core.renderer, Text, NULL, &Text_rect);
+
+	/* Game Start */
+	surfaceText = TTF_RenderText_Solid(core.fonts.text, "Press ENTER to start", White);
+	Text = SDL_CreateTextureFromSurface(core.renderer, surfaceText);
+	
+	Text_rect.w = surfaceText->w;
+	Text_rect.h = surfaceText->h;
+	Text_rect.x = WINDOW_WIDTH/2 - surfaceText->w/2;
+	Text_rect.y = WINDOW_HEIGHT/2;
+
+	SDL_RenderCopy(core.renderer, Text, NULL, &Text_rect);
+	
+	/* Game Quit */
+	surfaceText = TTF_RenderText_Solid(core.fonts.text, "Press ESCAPE to exit", White);
+	Text = SDL_CreateTextureFromSurface(core.renderer, surfaceText);
+	
+	Text_rect.w = surfaceText->w;
+	Text_rect.h = surfaceText->h;
+	Text_rect.x = WINDOW_WIDTH/2 - surfaceText->w/2;
+	Text_rect.y = WINDOW_HEIGHT/2 + surfaceText->h*2;
+
+	SDL_RenderCopy(core.renderer, Text, NULL, &Text_rect);
+
+	SDL_FreeSurface(surfaceText);
+	SDL_DestroyTexture(Text);	
+}
 
 void GameStart(GameData *game)
 {
-    PlayerMovement(&(game->player));
-    PlayerBullets(&(game->player));
-
-    Enemies(WINDOW_WIDTH, WINDOW_HEIGHT, game->enemy);
-    Asteroids(WINDOW_WIDTH, WINDOW_HEIGHT, game->asteroid);
+	player(WINDOW_WIDTH, WINDOW_HEIGHT, &(game->player));
+    bullets(WINDOW_WIDTH, WINDOW_HEIGHT, &(game->player));
+    enemies(WINDOW_WIDTH, WINDOW_HEIGHT, game->enemy);
+    asteroids(WINDOW_WIDTH, WINDOW_HEIGHT, game->asteroid);
 
     BoundDetection(WINDOW_WIDTH, WINDOW_HEIGHT, game);
     CollisionHandler(WINDOW_WIDTH, WINDOW_HEIGHT, game);
-
-	SDL_RenderCopy(core.renderer, core.textures.player, NULL, &(game->player.position));
 }
 
 void GameRestart() {}

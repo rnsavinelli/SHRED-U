@@ -26,7 +26,7 @@
 #include "player.h"
 #include "game.h"
 
-void PlayerInit(struct Player *player)
+void playerInit(int window_width, int window_height, struct Player *player)
 {
     extern SDL_Resources core;
 
@@ -38,22 +38,47 @@ void PlayerInit(struct Player *player)
 					&(player->position.w),
 					&(player->position.h));
 
-    player->position.x = (WINDOW_WIDTH - player->position.w) / 2;
-    player->position.y = (WINDOW_HEIGHT - player->position.h);
+    player->position.x = (window_width - player->position.w) / 2;
+    player->position.y = (window_height - player->position.h);
 
     player->speed.x = 0;
     player->speed.y = 0;
-
-    for (int i = 0; i < N_BULLETS; i++) {
-        player->bullets[i].status = false;
-        player->bullets[i].position.x = 0;
-        player->bullets[i].position.y = 0;
-    }
 }
 
-void PlayerMovement(struct Player *player)
+void playerBounds(int window_width, int window_height, struct Player *player)
+{	
+	bool flag = false;
+	
+	if (player->position.x < window_width/4) {
+        player->position.x = window_width/4;
+        flag = true;
+    }
+
+    if (player->position.y < 0) {
+        player->position.y = 0;
+		flag = true;
+    }
+
+    if (player->position.x > window_width - player->position.w - window_width/4) {
+        player->position.x = window_width - player->position.w - window_width/4;
+		flag = true;
+    }
+
+    if (player->position.y > window_height - player->position.h) {
+        player->position.y = window_height - player->position.h;
+		flag = true;
+    }
+    
+    if (flag) {
+		printf("[PLAYER] Bound reached.\n");
+	}
+}
+
+void player(int window_width, int window_height, struct Player *player)
 {
     extern struct KeyboardInput key_pressed;
+
+    playerDraw(player);
 
     player->speed.x = 0;
     player->speed.y = 0;
@@ -75,10 +100,34 @@ void PlayerMovement(struct Player *player)
     }
 
     player->position.x += (int) player->speed.x/100;
-    player->position.y -= (int) player->speed.y/100;
+    player->position.y -= (int) player->speed.y/100;    
 }
 
-void PlayerBullets(struct Player *player)
+void playerDraw(struct Player *player)
+{
+    extern SDL_Resources core;
+	
+	SDL_RenderCopy(core.renderer, core.textures.player, 
+					NULL, &(player->position));
+}
+
+/**********************************************************************/
+
+void bulletsInit(int window_width, int window_height, struct Player *player) {	
+    for (int i = 0; i < N_BULLETS; i++) {
+        player->bullets[i].status = false;
+        player->bullets[i].position.x = window_width;
+        player->bullets[i].position.y = window_height;
+	}
+}
+
+void bullets(int window_width, int window_height, struct Player *player){
+	bulletsHandler(window_width, window_height, player);
+	bulletsMove(window_width, window_height, player);
+	bulletsDraw(player);
+}
+
+void bulletsHandler(int window_width, int window_height, struct Player *player)
 {
     extern struct KeyboardInput key_pressed;
 
@@ -87,12 +136,12 @@ void PlayerBullets(struct Player *player)
     if (key_pressed.space) {
 		for (int i = 0; i < N_BULLETS; i++) {
 			if(!(player->bullets[i]).status) {
+				(player->bullets[i]).status = true;
+				
 				(player->bullets[i]).position.x = player->position.x + player->position.w/2
 												- (player->bullets[i]).position.w/2;
 
 				(player->bullets[i]).position.y = player->position.y + player->bullets[i].position.h/2;
-
-				(player->bullets[i]).status = true;
 
 				if (variant == 0) {
 					player->bullets[i].texture = core.textures.bullet_zero;
@@ -102,13 +151,14 @@ void PlayerBullets(struct Player *player)
 					player->bullets[i].texture = core.textures.bullet_one;
 				}
 
-				SDL_QueryTexture(player->bullets[i].texture, NULL, NULL,
-								&(player->bullets[i].position.w),
-								&(player->bullets[i].position.h));
 				break;
 			}
 		}
 	}
+}
+
+void bulletsMove(int window_width, int window_height, struct Player *player){
+	extern SDL_Resources core;
 
     for (int i = 0; i < N_BULLETS; i++) {
         if(player->bullets[i].status) {
@@ -117,12 +167,31 @@ void PlayerBullets(struct Player *player)
 			SDL_RenderCopy(core.renderer, player->bullets[i].texture,
 							NULL, &(player->bullets[i].position));
 
-            if(player->bullets[i].position.y < 0) {
+        }
+    }	
+}
+
+void bulletsBounds(int window_width, int window_height, struct Player *player) {
+    for (int i = 0; i < N_BULLETS; i++) {
+        if(player->bullets[i].status) {
+            if( player->bullets[i].position.y < 0 || 
+				player->bullets[i].position.y > window_height) {
 				player->bullets[i].status = false;
-                player->bullets[i].position.y = 0;
-                player->bullets[i].position.x = 0;
+                player->bullets[i].position.y = window_height;
+                player->bullets[i].position.x = window_width;
             }
         }
-    }
+    }	
+}
 
+void bulletsDraw(struct Player *player)
+{
+    extern SDL_Resources core;
+    
+	for (int i = 0; i < N_BULLETS; i++) {
+		if(player->bullets[i].status)
+			SDL_QueryTexture(player->bullets[i].texture, NULL, NULL,
+								&(player->bullets[i].position.w),
+								&(player->bullets[i].position.h));	
+	}
 }
