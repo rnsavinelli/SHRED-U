@@ -64,6 +64,5 @@ void bulletsInit(int window_width, int window_height, struct Player *player);
 void bulletsHandler(int window_width, int window_height, struct Player *player);
 void bulletsMove(int window_width, int window_height, struct Player *player);
 void bulletsBounds(int window_width, int window_height, struct Player *player);
-void bulletsDraw(struct Player *player);
 
 #endif
