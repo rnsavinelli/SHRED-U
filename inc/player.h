@@ -26,7 +26,7 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
-#define N_BULLETS	12
+#define N_BULLETS	40
 
 #define DEFAULT_SPEED	500
 #define BULLET_SPEED	1200
@@ -42,7 +42,7 @@ struct Speed {
 struct Bullets {
     bool status;
     SDL_Rect position;
-    SDL_Texture *texture;    
+    SDL_Texture *texture;
 };
 
 struct Player {

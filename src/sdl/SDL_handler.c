@@ -143,7 +143,7 @@ void SDL_CleanResources(SDL_Resources *sdl)
         SDL_DestroyWindow(sdl->window);
     }
 
-    SDL_Quit();
+    atexit(SDL_Quit);
 
     printf("[STATUS] All initialized SDL subsystems were cleaned up.\n");
 }

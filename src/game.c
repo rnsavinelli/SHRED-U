@@ -43,7 +43,7 @@ void GameInit(GameData *game)
 void GameRun(GameData *game)
 {
     extern SDL_Resources core;
-    extern struct KeyboardInput key_pressed;    
+    extern struct KeyboardInput key_pressed;
 
     SDL_RenderClear(core.renderer);
 
@@ -82,8 +82,8 @@ void GameMainMenu()
     extern SDL_Resources core;
 
 	SDL_Color Yellow = {255, 215, 0};
-	SDL_Color White = {255, 255, 255};    
-    
+	SDL_Color White = {255, 255, 255};
+
     SDL_Surface* surfaceText;
 	SDL_Texture* Text;
 	SDL_Rect Text_rect;
@@ -91,7 +91,7 @@ void GameMainMenu()
 	/* TITLE */
 	surfaceText = TTF_RenderText_Solid(core.fonts.title, "SHRED -U", Yellow);
 	Text = SDL_CreateTextureFromSurface(core.renderer, surfaceText);
-	
+
 	Text_rect.w = surfaceText->w;
 	Text_rect.h = surfaceText->h;
 	Text_rect.x = WINDOW_WIDTH/2 - surfaceText->w/2;
@@ -99,21 +99,27 @@ void GameMainMenu()
 
 	SDL_RenderCopy(core.renderer, Text, NULL, &Text_rect);
 
+    SDL_FreeSurface(surfaceText);
+	SDL_DestroyTexture(Text);
+
 	/* Game Start */
 	surfaceText = TTF_RenderText_Solid(core.fonts.text, "Press ENTER to start", White);
 	Text = SDL_CreateTextureFromSurface(core.renderer, surfaceText);
-	
+
 	Text_rect.w = surfaceText->w;
 	Text_rect.h = surfaceText->h;
 	Text_rect.x = WINDOW_WIDTH/2 - surfaceText->w/2;
 	Text_rect.y = WINDOW_HEIGHT/2;
 
 	SDL_RenderCopy(core.renderer, Text, NULL, &Text_rect);
-	
+
+    SDL_FreeSurface(surfaceText);
+	SDL_DestroyTexture(Text);
+
 	/* Game Quit */
 	surfaceText = TTF_RenderText_Solid(core.fonts.text, "Press ESCAPE to exit", White);
 	Text = SDL_CreateTextureFromSurface(core.renderer, surfaceText);
-	
+
 	Text_rect.w = surfaceText->w;
 	Text_rect.h = surfaceText->h;
 	Text_rect.x = WINDOW_WIDTH/2 - surfaceText->w/2;
@@ -122,7 +128,7 @@ void GameMainMenu()
 	SDL_RenderCopy(core.renderer, Text, NULL, &Text_rect);
 
 	SDL_FreeSurface(surfaceText);
-	SDL_DestroyTexture(Text);	
+	SDL_DestroyTexture(Text);
 }
 
 void GameStart(GameData *game)

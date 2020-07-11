@@ -42,6 +42,7 @@ int KeyboardHandler(void)
     extern struct KeyboardInput key_pressed;
 
     SDL_Event event;
+    event.type = SDL_FIRSTEVENT;
 
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
