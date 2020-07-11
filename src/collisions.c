@@ -47,23 +47,22 @@ bool CollisionDetection(float x1, float y1, float w1, float h1, float x2, float 
 bool CollisionHandler(int window_width, int window_height, GameData *game)
 {
     bool collision = false;
-
-    int asteroid_x, asteroid_y;
-    int enemy_x, enemy_y;
-    int bullet_x, bullet_y;
-
+   
     int x = game->player.position.x;
     int y = game->player.position.y;
 
     int player_w = game->player.position.w;
     int player_h = game->player.position.h;
-
+    
+	int bullet_x = 0, bullet_y = 0;
     int bullet_w = game->player.bullets->position.w;
     int bullet_h = game->player.bullets->position.h;
 
+	int asteroid_x = 0, asteroid_y = 0;
     int asteroid_w = game->asteroid->position.w;
     int asteroid_h = game->asteroid->position.h;
-
+	
+	int enemy_x = 0, enemy_y = 0;
     int enemy_w = game->enemy->position.w;
     int enemy_h = game->enemy->position.h;
 
@@ -100,19 +99,21 @@ bool CollisionHandler(int window_width, int window_height, GameData *game)
             }
 
 			for(int k = 0; k < N_BULLETS; k++) {
-                bullet_y = game->player.bullets[k].position.y;
-                bullet_x = game->player.bullets[k].position.x;
+				if(game->player.bullets[k].status == true) {
+					bullet_y = game->player.bullets[k].position.y;
+					bullet_x = game->player.bullets[k].position.x;
+                
+					if(CollisionDetection(enemy_x - enemy_w/2, enemy_y - enemy_h/2, enemy_w, enemy_h,
+						bullet_x - bullet_w/2, bullet_y - bullet_h/2,
+						bullet_w, bullet_h) ) {
 
-                if(CollisionDetection(enemy_x - enemy_w/2, enemy_y - enemy_h/2, enemy_w, enemy_h,
-                    bullet_x - bullet_w/2, bullet_y - bullet_h/2,
-                    bullet_w, bullet_h) ) {
-
-                    game->player.bullets[k].status = false;
-                    game->player.bullets[k].position.x = window_width;
-                    game->player.bullets[k].position.y = 0;
-                    game->enemy[(N_ENEMIES * j) + i].status = false;
-                    game->enemy[(N_ENEMIES * j) + i].position.x = window_width + (2 * enemy_w);
-                    game->player.score += 5;
+						game->player.bullets[k].status = false;
+						game->player.bullets[k].position.x = window_width;
+						game->player.bullets[k].position.y = 0;
+						game->enemy[(N_ENEMIES * j) + i].status = false;
+						game->enemy[(N_ENEMIES * j) + i].position.x = window_width + (2 * enemy_w);
+						game->player.score += 5;
+					}
                 }
             }
         }

@@ -28,11 +28,12 @@
 SDL_Resources core;
 
 /* Initializes all core functions needed for the game to run */
-int SDL_InitResources(SDL_Resources *sdl)
+int
+SDL_InitResources(SDL_Resources *sdl)
 {
     printf("[STATUS] Initializing SDL subsystems...\n");
 
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("[WARNING] Error initializing SDL: %s\n", SDL_GetError());
         return ERROR;
     }
@@ -103,32 +104,33 @@ int SDL_InitResources(SDL_Resources *sdl)
 }
 
 /* Cleans all used resources */
-void SDL_CleanResources(SDL_Resources *sdl)
+void
+SDL_CleanResources(SDL_Resources *sdl)
 {
-    if(sdl->textures.player != NULL || sdl->textures.enemy != NULL || sdl->textures.asteroid != NULL
-        || sdl->textures.bullet_zero != NULL || sdl->textures.bullet_one != NULL) {
-        printf("[STATUS] Destroying textures...\n");
-    }
+    printf("[STATUS] Destroying textures...\n");
 
-    if(sdl->textures.player != NULL) {
+    if(sdl->textures.player != NULL)
         SDL_DestroyTexture(sdl->textures.player);
-    }
 
-    if(sdl->textures.enemy != NULL) {
+    if(sdl->textures.enemy != NULL)
         SDL_DestroyTexture(sdl->textures.enemy);
-    }
 
-    if(sdl->textures.asteroid != NULL) {
+    if(sdl->textures.asteroid != NULL)
         SDL_DestroyTexture(sdl->textures.asteroid);
-    }
 
-    if(sdl->textures.bullet_zero != NULL) {
+    if(sdl->textures.bullet_zero != NULL)
         SDL_DestroyTexture(sdl->textures.bullet_zero);
-    }
 
-    if(sdl->textures.bullet_one != NULL) {
+    if(sdl->textures.bullet_one != NULL)
         SDL_DestroyTexture(sdl->textures.bullet_one);
-    }
+
+    printf("[STATUS] Cleaning TTF fonts...\n");
+
+    if(sdl->fonts.title != NULL)
+        TTF_CloseFont(sdl->fonts.title);
+
+    if(sdl->fonts.text != NULL)
+        TTF_CloseFont(sdl->fonts.text);
 
     printf("[STATUS] Terminating TTF API...\n");
     TTF_Quit();
@@ -143,7 +145,7 @@ void SDL_CleanResources(SDL_Resources *sdl)
         SDL_DestroyWindow(sdl->window);
     }
 
-    atexit(SDL_Quit);
+    SDL_Quit();
 
     printf("[STATUS] All initialized SDL subsystems were cleaned up.\n");
 }

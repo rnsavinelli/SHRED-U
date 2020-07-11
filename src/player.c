@@ -118,13 +118,14 @@ void bulletsInit(int window_width, int window_height, struct Player *player) {
         player->bullets[i].status = false;
         player->bullets[i].position.x = window_width;
         player->bullets[i].position.y = window_height;
+        player->bullets[i].position.w = 0;
+        player->bullets[i].position.h = 0;
 	}
 }
 
 void bullets(int window_width, int window_height, struct Player *player){
 	bulletsHandler(window_width, window_height, player);
 	bulletsMove(window_width, window_height, player);
-	bulletsDraw(player);
 }
 
 void bulletsHandler(int window_width, int window_height, struct Player *player)
@@ -150,7 +151,10 @@ void bulletsHandler(int window_width, int window_height, struct Player *player)
 				else if (variant == 1) {
 					player->bullets[i].texture = core.textures.bullet_one;
 				}
-
+				
+				SDL_QueryTexture(player->bullets[i].texture, NULL, NULL,
+								&(player->bullets[i].position.w),
+								&(player->bullets[i].position.h));
 				break;
 			}
 		}
@@ -161,12 +165,11 @@ void bulletsMove(int window_width, int window_height, struct Player *player){
 	extern SDL_Resources core;
 
     for (int i = 0; i < N_BULLETS; i++) {
-        if(player->bullets[i].status) {
+        if(player->bullets[i].status == true) {
             player->bullets[i].position.y -= (int) BULLET_SPEED/100;
 
 			SDL_RenderCopy(core.renderer, player->bullets[i].texture,
 							NULL, &(player->bullets[i].position));
-
         }
     }	
 }
@@ -182,16 +185,4 @@ void bulletsBounds(int window_width, int window_height, struct Player *player) {
             }
         }
     }	
-}
-
-void bulletsDraw(struct Player *player)
-{
-    extern SDL_Resources core;
-    
-	for (int i = 0; i < N_BULLETS; i++) {
-		if(player->bullets[i].status)
-			SDL_QueryTexture(player->bullets[i].texture, NULL, NULL,
-								&(player->bullets[i].position.w),
-								&(player->bullets[i].position.h));	
-	}
 }

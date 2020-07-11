@@ -26,7 +26,7 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
-#define N_BULLETS	40
+#define N_BULLETS	25
 
 #define DEFAULT_SPEED	500
 #define BULLET_SPEED	1200

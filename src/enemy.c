@@ -29,14 +29,14 @@ void enemiesInit(int window_width, int window_height, struct Enemy *enemy)
     for(int i = 0; i < (N_ENEMIES*N_ROWS); i++) {
         enemy[i].status = false;
        
-		SDL_QueryTexture(core.textures.enemy, NULL, NULL,
-						&(enemy[i].position.w),
-						&(enemy[i].position.h));
-	
         enemy[i].position.x = window_width;
 		enemy[i].position.y = window_height;
 		
-        enemy[i].speed.x = 0;
+		SDL_QueryTexture(core.textures.enemy, NULL, NULL,
+						&(enemy[i].position.w),
+						&(enemy[i].position.h));
+						
+		enemy[i].speed.x = 0;
         enemy[i].speed.y = ENEMY_SPEED;
 	}
 }

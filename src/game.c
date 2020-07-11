@@ -45,6 +45,7 @@ void GameRun(GameData *game)
     extern SDL_Resources core;
     extern struct KeyboardInput key_pressed;
 
+    SDL_SetRenderTarget(core.renderer, NULL);
     SDL_RenderClear(core.renderer);
 
     switch(game->menu) {

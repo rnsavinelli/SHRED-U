@@ -24,7 +24,8 @@
 #include "game.h"
 #include "main.h"
 
-int main(int argc, char** argv)
+int
+main(int argc, char* argv[])
 {
     extern SDL_Resources core;
     GameData game;
@@ -32,7 +33,7 @@ int main(int argc, char** argv)
     if(SDL_InitResources(&core) != ERROR) {
         printf("[STATUS] Launching the game...\n");
         GameInit(&game);
-        while(KeyboardHandler() != SDL_QUIT) {            			
+        while(KeyboardHandler() != SDL_QUIT) {
             GameRun(&game);
         }
     }
